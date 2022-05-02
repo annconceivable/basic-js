@@ -23,9 +23,56 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  let mines = [] ;
+   for (let i = 0; i < matrix.length; i++) {
+     mines.push([]);
+     for (let j = 0; j < matrix[i].length; j++){
+       matrix[i][j] = Number(matrix[i][j]);
+       mines[i].push(0);
+     }
+   }
+   
+   
+   for (let row = 0; row < matrix.length; row++) {
+     for (let col = 0; col < matrix[0].length; col++) {
+       if ((row === 0 && col > 0 && col < ( matrix[0].length - 1 ))) {
+         mines[row][col] = matrix[row][col-1] + matrix[row+1][col-1] + matrix[row+1][col] + matrix[row + 1][col+1] + matrix[row][col+1];
+       }
+       else if ((row === (matrix.length -1) && col > 0 && col < ( matrix[0].length - 1 ))) {
+         
+         mines[row][col] = matrix[row][col-1] + matrix[row-1][col-1] + matrix[row-1][col] + matrix[row-1][col+1] + matrix[row][col+1];
+       }
+       else if (row === 0 && col === 0) {
+         
+         mines[row][col] = matrix[1][0] + matrix[1][1] + matrix[0][1];
+       }
+       else if ((row === (matrix.length - 1) && col === 0)) {
+         
+         mines[row][col] = matrix[row-1][0] + matrix[row-1][1] + matrix[row][1];
+       }
+       else if (row === 0 && col === (matrix[0].length - 1)){
+         
+         mines[row][col] = matrix[row][col-1] + matrix[row+1][col-1] + matrix[row+1][col];
+   
+       }
+       else if (row === (matrix.length-1) && col === (matrix[0].length-1)) {
+         mines[row][col] = matrix[row][col-1] + matrix[row-1][col-1] + matrix[row-1][col];
+        
+       }
+       else if (col === 0 && row > 0 && row < (matrix.length - 1)) {
+         mines[row][col] = matrix[row-1][col] + matrix[row-1][1] + matrix[row][1] + matrix[row+1][1] + matrix[row+1][0];
+       }
+       else if (col === (matrix[0].length - 1) && row > 0 && row < (matrix.length - 1)) {
+         mines[row][col] = matrix[row-1][col] + matrix[row-1][col-1] + matrix[row][col-1] + matrix[row+1][col-1] + matrix[row+1][col];
+       }
+       else if (row > 0 && row < (matrix.length-1) && col > 0 && col < (matrix[0].length-1)) {
+         mines[row][col] = matrix[row-1][col-1] + matrix[row-1][col] + matrix[row-1][col+1] + matrix[row][col+1] +matrix[row+1][col+1] + matrix[row+1][col] + matrix[row+1][col-1] + matrix[row][col-1];
+       } 
+     }
+   }
+   return(mines);
+   
 }
 
 module.exports = {
